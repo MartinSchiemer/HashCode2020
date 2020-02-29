@@ -53,6 +53,7 @@ def big_boi_search(prob):
             libs = [x for x in libs if x.days < days]
 
     prob.signup = list(lib_order(prob.libs, prob.days))
+    return [i.id for i in prob.signup.copy()]
         
 def signup_libs(prob, dna):
     libs_i = dna
@@ -116,13 +117,6 @@ def assign_books_(prob, dna):
 
         
 def solve(prob):
-    if True:
-        prob.reset()
-        big_boi_search(prob)
-        s = prob.score()
-        print(str(s))
-        return s
-    
     
     init_score = 1
     
@@ -139,8 +133,12 @@ def solve(prob):
         s **= 5
         return s
     
-    g = init_gene(prob)
+    
+    #g = init_gene(prob)
+    prob.reset()
+    g = big_boi_search(prob)
     init_score = score(g)
+    print(f"Initial score after big boi search: {init_score}")
     
     if False:
         print(str(init_score))
@@ -165,4 +163,5 @@ def solve(prob):
         
         if drastic:
             drastic = False
+    global last_per = -1
     return prob
