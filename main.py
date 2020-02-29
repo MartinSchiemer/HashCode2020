@@ -125,12 +125,12 @@ def zip_code():
                     w.write(r.read().encode('utf-8'))
     
 
-def main(start=''):
+def main(start='', genetic=False):
     zip_code()
 
     for p in get_prob_names(start):
         prob = read_file(p)
-        solve(prob)
+        solve(prob, genetic)
     
         prob.prepare_for_output()
         

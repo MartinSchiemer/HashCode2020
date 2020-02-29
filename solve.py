@@ -32,7 +32,7 @@ def big_boi_search(prob):
         days -= lib.days
         books = pick_books_for_lib(lib, lib.capacity(days))
         lib.candid_books = books
-        return sum(b.score for b in books)
+        return sum(b.score for b in books) / lib.days
         
     def lib_order(libs, days):
         libs = [x for x in libs if x.days < days]
@@ -116,7 +116,7 @@ def assign_books_(prob, dna):
         
 
         
-def solve(prob):
+def solve(prob, genetic):
     
     init_score = 1
     
@@ -144,24 +144,27 @@ def solve(prob):
         print(str(init_score))
         return prob
     
-    pool = create_pop(g)
-    non_improve_counter = 0
-    old_score = 0
-    drastic = False
-    for i in range(10000):
-        if non_improve_counter == 5:
-            drastic = True
-            
-        pool = breeding(pool, score_c, drastic=False)
-        s = score(pool[0])
-        if s < old_score:
-            non_improve_counter += 1
-        else:
-            non_improve_counter = 0
-        print(str(s))
-        old_score = s
+    if genetic:
         
-        if drastic:
-            drastic = False
-    global last_per = -1
+        pool = create_pop(g)
+        non_improve_counter = 0
+        old_score = 0
+        drastic = False
+        for i in range(10000):
+            if non_improve_counter == 5:
+                drastic = True
+
+            pool = breeding(pool, score_c, drastic=False)
+            s = score(pool[0])
+            if s < old_score:
+                non_improve_counter += 1
+            else:
+                non_improve_counter = 0
+            print(str(s))
+            old_score = s
+
+            if drastic:
+                drastic = False
+        global last_per
+        last_per = -1
     return prob
